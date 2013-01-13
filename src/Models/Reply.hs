@@ -72,10 +72,11 @@ sortByCreateAtDesc = [ "create_at" =: 1, "reply_id" =: 1 ]
 emptyReply :: Reply
 emptyReply = Reply { _replyId = Nothing }
 
-findAllReply :: AppHandler [Reply]
-findAllReply = do
+findNumReply :: Limit -> AppHandler [Reply]
+findNumReply n = do
     let replySelection = select [] replyCollection
-    mongoFindAllBy emptyReply (replySelection { sort = sortByCreateAtDesc})
+    mongoFindAllBy emptyReply (replySelection { sort  = [ "create_at" =: -1 ]
+                                              , limit = n })
 
 -----------------------------------------------------------------------
 

@@ -117,6 +117,13 @@ findOneTopic oid = mongoFindById $ emptyTopic { _topicId = Just oid }
 findAllTopic :: AppHandler [Topic]
 findAllTopic  = findTopicGeneric []
 
+-- | Find the most recent Num topics.
+--
+findNumTopic :: Limit -> AppHandler [Topic]
+findNumTopic n = do
+  let topicSelection = select [] topicCollection
+  mongoFindAllBy emptyTopic (topicSelection { sort  = sortByCreateAtDesc
+                                            , limit = n })
 
 -- | Find topic per tag.
 --
